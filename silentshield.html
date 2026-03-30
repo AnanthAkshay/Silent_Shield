@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SilentShield – No Voice Emergency System</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #080c12;
+    --surface: #0e1420;
+    --surface2: #141c2e;
+    --border: #1e2d48;
+    --accent: #00d4ff;
+    --accent2: #ff3b6b;
+    --accent3: #7b61ff;
+    --text: #e8edf5;
+    --muted: #6b7c96;
+    --glow: rgba(0,212,255,0.18);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(8,12,18,0.82);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(0,212,255,0.08);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.25rem;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--text); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.9rem; font-weight: 500;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+  /* ─── PAGES ───────────────────────────────────────── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ─── SHARED ──────────────────────────────────────── */
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 48px; }
+  .section { padding: 96px 0; }
+  .section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px;
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 800; line-height: 1.18;
+    margin-bottom: 20px;
+  }
+  h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem; font-weight: 700;
+    margin-bottom: 10px;
+  }
+  p { color: #aab8cc; max-width: 620px; }
+  .divider {
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0;
+  }
+
+  /* ─── BUTTONS ─────────────────────────────────────── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 32px; border-radius: 6px;
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 0.95rem; letter-spacing: 0.04em;
+    text-decoration: none; cursor: pointer;
+    border: none; transition: all 0.25s;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #080c12;
+    box-shadow: 0 0 32px rgba(0,212,255,0.35);
+  }
+  .btn-primary:hover {
+    background: #33ddff;
+    box-shadow: 0 0 48px rgba(0,212,255,0.55);
+    transform: translateY(-2px);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--accent);
+    border: 1.5px solid rgba(0,212,255,0.4);
+  }
+  .btn-outline:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 24px rgba(0,212,255,0.2);
+    transform: translateY(-2px);
+  }
+
+  /* ─── PAGE 1: HERO ────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding-top: 100px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 60% 40%, rgba(0,212,255,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(123,97,255,0.06) 0%, transparent 60%);
+  }
+  .hero-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 64px; align-items: center;
+    position: relative; z-index: 2;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 100px; padding: 6px 16px;
+    font-size: 0.78rem; color: var(--accent);
+    font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 800; line-height: 1.06;
+    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+  }
+  .hero h1 .accent { color: var(--accent); }
+  .hero-tagline {
+    font-size: 1.2rem; font-weight: 300; font-style: italic;
+    color: #8fa3bd; margin-bottom: 16px; max-width: none;
+  }
+  .hero-desc {
+    font-size: 1rem; color: #7a8fa8;
+    margin-bottom: 40px; max-width: 460px;
+  }
+  .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  /* Hero visual */
+  .hero-visual {
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .phone-mockup {
+    width: 220px; height: 400px;
+    background: var(--surface2);
+    border-radius: 36px;
+    border: 2px solid var(--border);
+    position: relative;
+    box-shadow:
+      0 0 0 6px rgba(0,212,255,0.04),
+      0 40px 80px rgba(0,0,0,0.6),
+      inset 0 0 60px rgba(0,212,255,0.03);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 12px;
+  }
+  .phone-notch {
+    position: absolute; top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 80px; height: 26px;
+    background: var(--bg);
+    border-radius: 0 0 16px 16px;
+  }
+  .calc-screen {
+    width: 84%; background: rgba(0,212,255,0.04);
+    border: 1px solid rgba(0,212,255,0.12);
+    border-radius: 12px; padding: 16px;
+    text-align: right;
+  }
+  .calc-display {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.8rem; color: var(--text);
+    letter-spacing: 0.08em;
+  }
+  .calc-sub { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+  .calc-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 6px; width: 84%;
+  }
+  .calc-btn {
+    aspect-ratio: 1; border-radius: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.82rem; color: var(--text);
+    font-weight: 500;
+  }
+  .calc-btn.op { color: var(--accent); }
+  .calc-btn.eq { background: rgba(0,212,255,0.15); color: var(--accent); }
+  .calc-btn.secret { background: rgba(255,59,107,0.12); color: var(--accent2); border-color: rgba(255,59,107,0.2); }
+
+  .pulse-ring {
+    position: absolute;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,212,255,0.12);
+    animation: pulse 3s ease-in-out infinite;
+  }
+  .pulse-ring:nth-child(2) { width: 340px; height: 340px; animation-delay: 0.8s; opacity: 0.6; }
+  .pulse-ring:nth-child(3) { width: 400px; height: 400px; animation-delay: 1.6s; opacity: 0.3; }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.04); opacity: 0.1; }
+  }
+
+  /* ─── STATS BAR ───────────────────────────────────── */
+  .stats-bar {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 36px 0;
+  }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .stat-item {
+    text-align: center; padding: 0 24px;
+    border-right: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem; font-weight: 800;
+    color: var(--accent); line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label { font-size: 0.82rem; color: var(--muted); }
+
+  /* ─── PROBLEM ─────────────────────────────────────── */
+  .problem-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 48px; align-items: start;
+  }
+  .scenario-cards { display: flex; flex-direction: column; gap: 14px; }
+  .scenario-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    border-radius: 10px; padding: 20px 24px;
+    display: flex; align-items: flex-start; gap: 16px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .scenario-card:hover {
+    background: var(--surface2);
+    border-left-color: #ff6b8a;
+  }
+  .scenario-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+  .scenario-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+  .scenario-desc { font-size: 0.85rem; color: var(--muted); max-width: none; }
+
+  /* ─── WHY FAILS ───────────────────────────────────── */
+  .fails-section { background: var(--surface); }
+  .fails-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .fail-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px;
+    position: relative; overflow: hidden;
+  }
+  .fail-card::after {
+    content: '✕';
+    position: absolute; top: -10px; right: 16px;
+    font-size: 5rem; color: rgba(255,59,107,0.06);
+    font-family: 'Syne', sans-serif; font-weight: 900;
+  }
+  .fail-icon { font-size: 1.6rem; margin-bottom: 14px; }
+  .fail-card h3 { font-size: 1rem; margin-bottom: 8px; }
+  .fail-card p { font-size: 0.87rem; max-width: none; }
+
+  /* ─── SOLUTION ────────────────────────────────────── */
+  .solution-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .solution-visual {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px;
+    text-align: center;
+    position: relative;
+  }
+  .shield-icon {
+    font-size: 5rem; display: block;
+    filter: drop-shadow(0 0 24px rgba(0,212,255,0.4));
+    margin-bottom: 16px;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .solution-tag {
+    display: inline-block;
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 6px; padding: 4px 12px;
+    font-size: 0.78rem; color: var(--accent);
+    font-weight: 600; margin: 4px;
+  }
+  .solution-points { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-top: 24px; }
+  .solution-points li {
+    display: flex; align-items: flex-start; gap: 12px;
+    color: #9bb0c9; font-size: 0.95rem;
+  }
+  .solution-points li::before {
+    content: '→';
+    color: var(--accent); font-weight: 700;
+    flex-shrink: 0; margin-top: 2px;
+  }
+
+  /* ─── FEATURES ────────────────────────────────────── */
+  .features-section { background: var(--surface); }
+  .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .feature-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 32px;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .feature-card:hover { border-color: rgba(0,212,255,0.25); transform: translateY(-4px); }
+  .feature-card:hover::before { opacity: 1; }
+  .feature-icon { font-size: 2rem; margin-bottom: 16px; display: block; }
+  .feature-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+  .feature-card p { font-size: 0.87rem; color: var(--muted); max-width: none; }
+
+  /* ─── HOW IT WORKS ────────────────────────────────── */
+  .how-steps {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0; position: relative; margin-top: 56px;
+  }
+  .how-steps::before {
+    content: '';
+    position: absolute; top: 30px; left: calc(16.66% + 12px); right: calc(16.66% + 12px);
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent3), var(--accent2));
+  }
+  .how-step { text-align: center; padding: 0 32px; }
+  .step-num {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 1.2rem; color: var(--accent);
+    position: relative; z-index: 2;
+    box-shadow: 0 0 20px rgba(0,212,255,0.25);
+  }
+  .step-icon { font-size: 1.4rem; margin-bottom: 14px; }
+  .how-step h3 { font-size: 1rem; margin-bottom: 8px; }
+  .how-step p { font-size: 0.85rem; color: var(--muted); max-width: none; }
+
+  /* ─── CTA SECTION ─────────────────────────────────── */
+  .cta-section {
+    text-align: center; background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 80px 0;
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(0,212,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-section h2 { margin: 0 auto 14px; }
+  .cta-section p { margin: 0 auto 36px; text-align: center; }
+
+  /* ─── PAGE 2: DETAIL ──────────────────────────────── */
+
+  /* Architecture */
+  .arch-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 48px; }
+  .arch-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px;
+    display: flex; gap: 18px; align-items: flex-start;
+  }
+  .arch-icon {
+    width: 48px; height: 48px; border-radius: 10px;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+  }
+  .arch-card h3 { margin-bottom: 6px; }
+  .arch-card p { font-size: 0.87rem; max-width: none; }
+
+  /* Flow diagram */
+  .flow-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 40px;
+    margin-top: 8px;
+  }
+  .flow-label {
+    font-family: 'Syne', sans-serif; font-size: 0.78rem;
+    font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 32px; display: flex; align-items: center; gap: 8px;
+  }
+  .flow-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+  .flow-nodes {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 0; position: relative;
+  }
+  .flow-node {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 12px; flex: 1; text-align: center;
+  }
+  .flow-node-circle {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .flow-node:hover .flow-node-circle {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(0,212,255,0.3);
+  }
+  .flow-node-label { font-size: 0.8rem; color: var(--muted); font-weight: 500; }
+  .flow-arrow { color: var(--accent); font-size: 1.2rem; flex-shrink: 0; }
+
+  /* Tech Stack */
+  .tech-section { background: var(--surface); }
+  .tech-groups { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  .tech-group {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px;
+  }
+  .tech-group h3 { margin-bottom: 16px; font-size: 0.95rem; color: var(--accent); }
+  .tech-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tech-tag {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 6px 14px;
+    font-size: 0.83rem; color: var(--text);
+    font-weight: 500;
+  }
+
+  /* Demo Mockup */
+  .demo-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 48px; align-items: center; }
+  .demo-phones { display: flex; gap: 24px; justify-content: center; }
+  .mini-phone {
+    width: 140px; height: 260px;
+    background: var(--surface2); border-radius: 24px;
+    border: 1.5px solid var(--border);
+    overflow: hidden; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 8px;
+    padding: 14px; position: relative;
+  }
+  .mini-phone .label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+    padding: 6px; font-size: 0.68rem; color: var(--muted);
+    text-align: center; border-top: 1px solid var(--border);
+  }
+  .alert-badge {
+    background: rgba(255,59,107,0.15);
+    border: 1px solid rgba(255,59,107,0.3);
+    border-radius: 8px; padding: 10px 12px;
+    font-size: 0.78rem; color: var(--accent2);
+    text-align: center; width: 90%;
+  }
+  .loc-pin { font-size: 1.8rem; }
+  .loc-coord { font-size: 0.65rem; color: var(--muted); }
+  .demo-steps { display: flex; flex-direction: column; gap: 16px; }
+  .demo-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 22px;
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  .demo-step-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 0.85rem; color: var(--accent); flex-shrink: 0;
+  }
+  .demo-step h3 { font-size: 0.95rem; margin-bottom: 4px; }
+  .demo-step p { font-size: 0.83rem; color: var(--muted); max-width: none; }
+
+  /* Use Cases */
+  .usecases-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .usecase-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px 20px;
+    text-align: center; transition: border-color 0.25s, transform 0.25s;
+  }
+  .usecase-card:hover { border-color: rgba(123,97,255,0.4); transform: translateY(-4px); }
+  .usecase-icon { font-size: 2.2rem; margin-bottom: 14px; display: block; }
+  .usecase-card h3 { font-size: 0.95rem; margin-bottom: 8px; }
+  .usecase-card p { font-size: 0.82rem; color: var(--muted); max-width: none; }
+
+  /* Impact */
+  .impact-section { background: var(--surface); }
+  .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .impact-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 32px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .impact-glow {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 80px;
+    background: radial-gradient(ellipse, rgba(0,212,255,0.12) 0%, transparent 70%);
+  }
+  .impact-icon { font-size: 2.4rem; margin-bottom: 16px; display: block; }
+  .impact-card h3 { font-size: 1rem; margin-bottom: 8px; }
+  .impact-card p { font-size: 0.85rem; color: var(--muted); max-width: none; margin: 0 auto; text-align: center; }
+
+  /* Future Scope */
+  .future-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .future-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px;
+    border-top: 3px solid var(--accent3);
+  }
+  .future-icon { font-size: 1.8rem; margin-bottom: 14px; display: block; }
+  .future-card h3 { font-size: 1rem; margin-bottom: 8px; }
+  .future-card p { font-size: 0.85rem; color: var(--muted); max-width: none; }
+
+  /* Standout */
+  .standout-section {
+    background: linear-gradient(135deg, rgba(0,212,255,0.05) 0%, rgba(123,97,255,0.05) 100%);
+    border-top: 1px solid var(--border);
+  }
+  .standout-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .standout-item { text-align: center; }
+  .standout-num {
+    font-family: 'Syne', sans-serif; font-size: 3rem;
+    font-weight: 800; color: transparent;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    -webkit-background-clip: text; background-clip: text;
+    line-height: 1; margin-bottom: 12px;
+  }
+  .standout-item h3 { margin-bottom: 8px; }
+  .standout-item p { font-size: 0.87rem; color: var(--muted); max-width: 260px; margin: 0 auto; text-align: center; }
+
+  /* Footer */
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    text-align: center;
+  }
+  footer p { font-size: 0.82rem; color: var(--muted); text-align: center; max-width: none; }
+  footer span { color: var(--accent); }
+
+  /* ─── IMAGE PLACEHOLDERS ──────────────────────────── */
+  .img-placeholder {
+    background: var(--surface);
+    border: 1px dashed rgba(0,212,255,0.25);
+    border-radius: 12px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 10px; color: var(--muted);
+    font-size: 0.8rem; font-weight: 500;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    min-height: 180px;
+  }
+  .img-placeholder span { font-size: 2rem; }
+
+  /* ─── ANIMATIONS ──────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .page.active .hero h1,
+  .page.active .hero-tagline,
+  .page.active .hero-desc,
+  .page.active .hero-cta {
+    animation: fadeUp 0.6s ease both;
+  }
+  .page.active .hero-tagline { animation-delay: 0.1s; }
+  .page.active .hero-desc { animation-delay: 0.2s; }
+  .page.active .hero-cta { animation-delay: 0.3s; }
+
+  /* ─── RESPONSIVE ──────────────────────────────────── */
+  @media (max-width: 900px) {
+    nav { padding: 14px 20px; }
+    .container { padding: 0 20px; }
+    .hero-grid, .problem-grid, .solution-grid, .demo-grid { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .stats-grid, .fails-grid, .features-grid, .usecases-grid,
+    .impact-grid, .future-grid, .standout-grid, .tech-groups,
+    .arch-grid { grid-template-columns: 1fr; }
+    .how-steps { grid-template-columns: 1fr; }
+    .how-steps::before { display: none; }
+    .nav-links { display: none; }
+    .flow-nodes { flex-wrap: wrap; gap: 16px; }
+    .flow-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#" onclick="showPage('landing')">🛡 Silent<span>Shield</span></a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('landing')" id="nav-landing" class="active">Overview</a></li>
+    <li><a onclick="showPage('detail')" id="nav-detail">Technical</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 1: LANDING                                       -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="page-landing" class="page active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-eyebrow">🔒 Hackathon Project 2025</div>
+          <h1>Silent<span class="accent">Shield</span></h1>
+          <p class="hero-tagline">"Emergency help without a single word."</p>
+          <p class="hero-desc">
+            A silent, undetectable emergency alert system for people who cannot speak during a crisis — no button press, no voice command, no detection risk.
+          </p>
+          <div class="hero-cta">
+            <button class="btn btn-primary" onclick="showPage('detail')">Explore Solution →</button>
+            <a href="#problem" class="btn btn-outline">See the Problem</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="pulse-ring"></div>
+          <div class="pulse-ring"></div>
+          <div class="pulse-ring"></div>
+          <div class="phone-mockup">
+            <div class="phone-notch"></div>
+            <div class="calc-screen">
+              <div class="calc-display">7734•</div>
+              <div class="calc-sub">Fake Calculator UI</div>
+            </div>
+            <div class="calc-grid">
+              <div class="calc-btn">7</div><div class="calc-btn">8</div><div class="calc-btn">9</div><div class="calc-btn op">÷</div>
+              <div class="calc-btn">4</div><div class="calc-btn">5</div><div class="calc-btn">6</div><div class="calc-btn op">×</div>
+              <div class="calc-btn">1</div><div class="calc-btn">2</div><div class="calc-btn">3</div><div class="calc-btn op">−</div>
+              <div class="calc-btn secret">SOS</div><div class="calc-btn">0</div><div class="calc-btn">.</div><div class="calc-btn eq">=</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Words needed to call for help</div></div>
+        <div class="stat-item"><div class="stat-num">&lt;3s</div><div class="stat-label">Alert delivery time</div></div>
+        <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Silent background operation</div></div>
+        <div class="stat-item"><div class="stat-num">3+</div><div class="stat-label">Hidden trigger methods</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PROBLEM -->
+  <section class="section" id="problem">
+    <div class="container">
+      <div class="problem-grid">
+        <div>
+          <div class="section-label">The Problem</div>
+          <h2>When speaking isn't an option</h2>
+          <p>
+            Millions of people face life-threatening situations where calling for help isn't possible — not because they won't, but because they can't. Traditional emergency systems were never designed for silence.
+          </p>
+          <p style="margin-top:14px;">
+            Whether it's a kidnapping, domestic abuse, or a threatening situation — every second of delay matters.
+          </p>
+        </div>
+        <div class="scenario-cards">
+          <div class="scenario-card">
+            <div class="scenario-icon">🚗</div>
+            <div>
+              <div class="scenario-title">Kidnapping / Abduction</div>
+              <div class="scenario-desc">Victim cannot speak or unlock phone without drawing attention from the abductor.</div>
+            </div>
+          </div>
+          <div class="scenario-card">
+            <div class="scenario-icon">🏠</div>
+            <div>
+              <div class="scenario-title">Domestic Abuse</div>
+              <div class="scenario-desc">Survivor is monitored closely; any visible call or message attempt can escalate danger.</div>
+            </div>
+          </div>
+          <div class="scenario-card">
+            <div class="scenario-icon">🌃</div>
+            <div>
+              <div class="scenario-title">Harassment / Night Travel</div>
+              <div class="scenario-desc">Person being followed cannot safely pull out phone to make a visible emergency call.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- WHY CURRENT SOLUTIONS FAIL -->
+  <section class="section fails-section">
+    <div class="container">
+      <div class="section-label">Why Current Solutions Fail</div>
+      <h2 style="margin-bottom:48px;">Built for the wrong situation</h2>
+      <div class="fails-grid">
+        <div class="fail-card">
+          <div class="fail-icon">🔒</div>
+          <h3>Requires Phone Unlock</h3>
+          <p>Emergency dialers require the phone to be unlocked first — impossible if the attacker is watching or controlling the device.</p>
+        </div>
+        <div class="fail-card">
+          <div class="fail-icon">🔴</div>
+          <h3>Visible Panic Buttons</h3>
+          <p>Dedicated panic buttons or obvious SOS apps can be spotted instantly, alerting the attacker and increasing risk to the victim.</p>
+        </div>
+        <div class="fail-card">
+          <div class="fail-icon">🎙️</div>
+          <h3>Voice-Based Systems Fail</h3>
+          <p>Hey Siri, Hey Google — voice-activated help is useless when speaking a single word could put you in greater danger.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- OUR SOLUTION -->
+  <section class="section">
+    <div class="container">
+      <div class="solution-grid">
+        <div class="solution-visual">
+          <span class="shield-icon">🛡️</span>
+          <div>
+            <span class="solution-tag">Silent Trigger</span>
+            <span class="solution-tag">Background Mode</span>
+            <span class="solution-tag">Instant Alerts</span>
+            <span class="solution-tag">Fake UI</span>
+            <span class="solution-tag">Live Location</span>
+          </div>
+          <div class="img-placeholder" style="margin-top:20px; min-height:100px;">
+            <span>📱</span> [Wireframe: Fake Calculator triggering alert]
+          </div>
+        </div>
+        <div>
+          <div class="section-label">Our Solution</div>
+          <h2>Invisible. Instant. Life-saving.</h2>
+          <p>SilentShield is a mobile application that hides inside a functional, convincing calculator app. The user triggers an SOS silently — the system does the rest without any visible indication.</p>
+          <ul class="solution-points">
+            <li>Triggers via hidden gesture: secret code entry, shake pattern, or tap sequence</li>
+            <li>Runs completely in the background — no screen flash, no sound</li>
+            <li>Sends live GPS location and SOS alert to pre-selected contacts and emergency services</li>
+            <li>Continues functioning as a normal calculator if the attacker checks the phone</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- KEY FEATURES -->
+  <section class="section features-section">
+    <div class="container">
+      <div class="section-label">Key Features</div>
+      <h2 style="margin-bottom:48px;">Designed for the most extreme conditions</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">🧮</span>
+          <h3>Hidden Trigger Methods</h3>
+          <p>Three covert activation methods: enter a secret numeric code in the calculator, perform a custom shake pattern, or use a specific tap sequence — all invisible to an observer.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📍</span>
+          <h3>Live Location Tracking</h3>
+          <p>The moment SOS is triggered, the system locks onto GPS and begins streaming your real-time location to emergency contacts — even as you move.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🔕</span>
+          <h3>Completely Silent Alerts</h3>
+          <p>No vibration. No sound. No screen change. The entire alert dispatch happens invisibly in the background — the phone looks completely normal.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🎭</span>
+          <h3>Fake UI for Safety</h3>
+          <p>The app is disguised as a fully functional calculator. Anyone who picks up the phone sees only a standard calculator — zero indication of an active emergency.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- HOW IT WORKS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">How It Works</div>
+      <h2 style="text-align:center;">Three steps. Zero words.</h2>
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="step-num">01</div>
+          <div class="step-icon">👆</div>
+          <h3>User Triggers Secretly</h3>
+          <p>User enters a pre-set secret code into the calculator (e.g., "1234=") or uses a shake pattern while the phone is in pocket.</p>
+        </div>
+        <div class="how-step">
+          <div class="step-num">02</div>
+          <div class="step-icon">⚙️</div>
+          <h3>System Activates Silently</h3>
+          <p>Background service detects the trigger, enables location services, and prepares emergency payload — all without any visual or audio output.</p>
+        </div>
+        <div class="how-step">
+          <div class="step-num">03</div>
+          <div class="step-icon">🚨</div>
+          <h3>Alert + Location Sent</h3>
+          <p>Silent SMS, push notification, and live GPS coordinates are dispatched to emergency contacts. Tracking continues until manually cancelled.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="section-label" style="text-align:center;">Ready to go deeper?</div>
+      <h2 style="text-align:center; max-width: 480px; margin: 0 auto 14px;">See how it's built</h2>
+      <p style="text-align:center; margin: 0 auto 36px;">Explore the full technical architecture, tech stack, demo walkthrough, and future roadmap.</p>
+      <button class="btn btn-primary" onclick="showPage('detail')">View Technical Details →</button>
+    </div>
+  </section>
+
+</div><!-- /page-landing -->
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- PAGE 2: DETAIL                                        -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="page-detail" class="page">
+
+  <!-- HEADER -->
+  <section style="padding: 120px 0 60px; background: var(--surface); border-bottom: 1px solid var(--border);">
+    <div class="container">
+      <div class="section-label">Technical Deep Dive</div>
+      <h2>System Architecture &amp; Implementation</h2>
+      <p>A complete breakdown of how SilentShield is engineered — from trigger detection to alert delivery.</p>
+    </div>
+  </section>
+
+  <!-- SYSTEM ARCHITECTURE -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">Architecture</div>
+      <h2 style="margin-bottom:40px;">Four core modules</h2>
+      <div class="arch-grid">
+        <div class="arch-card">
+          <div class="arch-icon">📱</div>
+          <div>
+            <h3>Mobile Application</h3>
+            <p>Built in Android (Java/Kotlin). Houses the fake calculator UI, background trigger detection service, and local state management. Runs as a persistent foreground service.</p>
+          </div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-icon">☁️</div>
+          <div>
+            <h3>Backend (Firebase / AWS)</h3>
+            <p>Firebase Realtime DB stores emergency contact data and session state. AWS Lambda + SNS optionally handles high-priority SMS dispatch and serverless alert routing.</p>
+          </div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-icon">🚨</div>
+          <div>
+            <h3>Alert Dispatch System</h3>
+            <p>Multi-channel alert delivery: silent push notification via Firebase Cloud Messaging + SMS fallback via Twilio/AWS SNS. Ensures delivery even in low-connectivity areas.</p>
+          </div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-icon">📍</div>
+          <div>
+            <h3>Location Tracking Module</h3>
+            <p>Google Maps API + Android Fused Location Provider for high-accuracy GPS. Live coordinates are streamed to the backend every 15 seconds and shared via a secure link.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FLOW DIAGRAM -->
+      <div class="flow-diagram">
+        <div class="flow-label">System Flow — [Suggest replacing with a Figma flowchart]</div>
+        <div class="flow-nodes">
+          <div class="flow-node">
+            <div class="flow-node-circle">👆</div>
+            <div class="flow-node-label">Trigger<br/>Detected</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">
+            <div class="flow-node-circle">⚙️</div>
+            <div class="flow-node-label">Background<br/>Activation</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">
+            <div class="flow-node-circle">📍</div>
+            <div class="flow-node-label">GPS Lock<br/>Acquired</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">
+            <div class="flow-node-circle">📨</div>
+            <div class="flow-node-label">Alert<br/>Dispatched</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">
+            <div class="flow-node-circle">🗺️</div>
+            <div class="flow-node-label">Live<br/>Tracking</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- TECH STACK -->
+  <section class="section tech-section">
+    <div class="container">
+      <div class="section-label">Tech Stack</div>
+      <h2 style="margin-bottom:40px;">Built with proven, production-ready tools</h2>
+      <div class="tech-groups">
+        <div class="tech-group">
+          <h3>📱 Mobile (Frontend)</h3>
+          <div class="tech-tags">
+            <span class="tech-tag">Android</span>
+            <span class="tech-tag">Java</span>
+            <span class="tech-tag">Kotlin</span>
+            <span class="tech-tag">Foreground Service</span>
+            <span class="tech-tag">Accelerometer API</span>
+          </div>
+        </div>
+        <div class="tech-group">
+          <h3>☁️ Backend &amp; Database</h3>
+          <div class="tech-tags">
+            <span class="tech-tag">Firebase Realtime DB</span>
+            <span class="tech-tag">Firebase Auth</span>
+            <span class="tech-tag">FCM</span>
+            <span class="tech-tag">AWS Lambda</span>
+            <span class="tech-tag">AWS SNS</span>
+          </div>
+        </div>
+        <div class="tech-group">
+          <h3>📍 Location &amp; Mapping</h3>
+          <div class="tech-tags">
+            <span class="tech-tag">Google Maps API</span>
+            <span class="tech-tag">Fused Location Provider</span>
+            <span class="tech-tag">Geocoding API</span>
+          </div>
+        </div>
+        <div class="tech-group">
+          <h3>📨 Alerts &amp; Messaging</h3>
+          <div class="tech-tags">
+            <span class="tech-tag">Twilio SMS</span>
+            <span class="tech-tag">Firebase Push</span>
+            <span class="tech-tag">Silent SMS</span>
+            <span class="tech-tag">Email Fallback</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- DEMO / MOCKUP -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">Demo Walkthrough</div>
+      <h2 style="margin-bottom:48px;">From trigger to rescue — in under 3 seconds</h2>
+      <div class="demo-grid">
+        <div class="demo-phones">
+          <div class="mini-phone">
+            <div style="font-size:0.75rem; color: var(--muted); text-align:center;">🧮 Calculator</div>
+            <div style="background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.12); border-radius:8px; padding:8px; width:90%; text-align:right;">
+              <div style="font-size:1.1rem; color:var(--text);">1234 =</div>
+            </div>
+            <div style="font-size:0.65rem; color:var(--accent2); background: rgba(255,59,107,0.08); padding:4px 8px; border-radius:4px;">SOS Triggered</div>
+            <div class="label">Victim's Phone</div>
+          </div>
+          <div style="display:flex; align-items:center; color:var(--accent); font-size:1.4rem;">→</div>
+          <div class="mini-phone">
+            <div class="alert-badge">🚨 SOS ALERT<br/>From: [Name]<br/>12:43 AM</div>
+            <div class="loc-pin">📍</div>
+            <div class="loc-coord">12.9716° N, 77.5946° E<br/>Updating live...</div>
+            <div class="label">Emergency Contact</div>
+          </div>
+        </div>
+        <div>
+          <div class="demo-steps">
+            <div class="demo-step">
+              <div class="demo-step-num">1</div>
+              <div>
+                <h3>Open Fake Calculator</h3>
+                <p>User opens what looks like a normal Android calculator app. Attacker sees nothing suspicious.</p>
+              </div>
+            </div>
+            <div class="demo-step">
+              <div class="demo-step-num">2</div>
+              <div>
+                <h3>Enter Secret Code</h3>
+                <p>User types their pre-configured emergency code (e.g., "1234="). The calc processes it silently — no visible change.</p>
+              </div>
+            </div>
+            <div class="demo-step">
+              <div class="demo-step-num">3</div>
+              <div>
+                <h3>Background Activates</h3>
+                <p>The foreground service silently enables GPS, prepares the SOS payload, suppresses all audio and visual outputs.</p>
+              </div>
+            </div>
+            <div class="demo-step">
+              <div class="demo-step-num">4</div>
+              <div>
+                <h3>Alert Reaches Contact</h3>
+                <p>Emergency contact receives a push notification + SMS with live location link. Tracking updates every 15 seconds.</p>
+              </div>
+            </div>
+          </div>
+          <div class="img-placeholder" style="margin-top:20px; min-height:80px;">
+            <span>🎬</span> [Suggest: Screen recording / Figma prototype embed]
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- USE CASES -->
+  <section class="section" style="background: var(--surface);">
+    <div class="container">
+      <div class="section-label">Use Cases</div>
+      <h2 style="margin-bottom:48px;">Who needs SilentShield</h2>
+      <div class="usecases-grid">
+        <div class="usecase-card">
+          <span class="usecase-icon">👩</span>
+          <h3>Women's Safety</h3>
+          <p>Harassment, stalking, or assault situations where drawing attention to a phone call escalates danger.</p>
+        </div>
+        <div class="usecase-card">
+          <span class="usecase-icon">🧒</span>
+          <h3>Child Safety</h3>
+          <p>Children in abusive or dangerous situations can trigger help without the abuser noticing.</p>
+        </div>
+        <div class="usecase-card">
+          <span class="usecase-icon">🆘</span>
+          <h3>Emergency Situations</h3>
+          <p>Medical emergencies, panic attacks, or any situation where speaking is physically impossible.</p>
+        </div>
+        <div class="usecase-card">
+          <span class="usecase-icon">🌙</span>
+          <h3>Night Travel</h3>
+          <p>Solo travellers followed at night can silently alert contacts without stopping or being seen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- IMPACT -->
+  <section class="section impact-section">
+    <div class="container">
+      <div class="section-label">Impact</div>
+      <h2 style="margin-bottom:48px; text-align:center;">Why this matters</h2>
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="impact-glow"></div>
+          <span class="impact-icon">⚡</span>
+          <h3>Faster Emergency Response</h3>
+          <p>Alert dispatched in under 3 seconds from trigger — faster than dialing 112 with a locked phone.</p>
+        </div>
+        <div class="impact-card">
+          <div class="impact-glow"></div>
+          <span class="impact-icon">🤫</span>
+          <h3>Works When Voice Fails</h3>
+          <p>Designed specifically for scenarios where existing voice-based and visible systems are not just unhelpful, but dangerous.</p>
+        </div>
+        <div class="impact-card">
+          <div class="impact-glow"></div>
+          <span class="impact-icon">❤️</span>
+          <h3>Can Save Lives</h3>
+          <p>Faster location sharing and earlier emergency contact activation directly improves survival odds in critical situations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- FUTURE SCOPE -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">Future Scope</div>
+      <h2 style="margin-bottom:40px;">The roadmap ahead</h2>
+      <div class="future-grid">
+        <div class="future-card">
+          <span class="future-icon">🤖</span>
+          <h3>AI Distress Detection</h3>
+          <p>On-device ML model to detect distress from voice tone, typing pattern, or heart rate (via wearable) — zero user input required.</p>
+        </div>
+        <div class="future-card">
+          <span class="future-icon">👮</span>
+          <h3>Police System Integration</h3>
+          <p>Direct API integration with local emergency services, allowing SilentShield alerts to auto-dispatch law enforcement with verified GPS data.</p>
+        </div>
+        <div class="future-card">
+          <span class="future-icon">⌚</span>
+          <h3>Wearable Device Support</h3>
+          <p>Extend SilentShield to smartwatches (WearOS / Apple Watch) — trigger SOS with a hidden gesture on the wrist, phone stays in pocket.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- WHY THIS STANDS OUT -->
+  <section class="section standout-section">
+    <div class="container">
+      <div class="section-label">Why SilentShield Stands Out</div>
+      <h2 style="text-align:center; margin-bottom:56px;">Not another SOS button</h2>
+      <div class="standout-grid">
+        <div class="standout-item">
+          <div class="standout-num">00dB</div>
+          <h3>Completely Silent</h3>
+          <p>No sound, no vibration, no screen flash. The system activates and operates with zero detectable output from any sensor.</p>
+        </div>
+        <div class="standout-item">
+          <div class="standout-num">0%</div>
+          <h3>Undetectable UI</h3>
+          <p>A fully functioning calculator app that passes any casual or scrutinous inspection — indistinguishable from the real thing.</p>
+        </div>
+        <div class="standout-item">
+          <div class="standout-num">∞</div>
+          <h3>Real-World Usability</h3>
+          <p>Built around actual human behavior in crisis — no training required, works with muscle memory, and covers the scenarios others ignore.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BACK CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 style="text-align:center; max-width:440px; margin: 0 auto 14px;">Built to protect the most vulnerable</h2>
+      <p style="text-align:center; margin: 0 auto 36px;">SilentShield — because help should never require a voice.</p>
+      <button class="btn btn-outline" onclick="showPage('landing')">← Back to Overview</button>
+    </div>
+  </section>
+
+</div><!-- /page-detail -->
+
+<footer>
+  <div class="container">
+    <p>🛡 <span>SilentShield</span> — No Voice Emergency System &nbsp;·&nbsp; Hackathon Project 2025 &nbsp;·&nbsp; Built for those who need it most</p>
+  </div>
+</footer>
+
+<script>
+  function showPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    document.getElementById('nav-' + page).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
